@@ -1,31 +1,9 @@
 #include "sensorth.h"
 #include "MyTypes.h"
-#include <stdint.h>
 
 
 void MaquinaDeEstado (void)
 {
-	static volatile Type_Estado estado = ESPERAR;
-	static volatile uint8_t tiempo_sensor = 0;
-	static volatile Type_Tension tension_actual = BAJA;
-
-	static volatile uint8_t tiempo_sensor;
-	static volatile uint8_t tiempo_en_baja;
-	static volatile uint8_t tiempo_en_alta;
-	static volatile uint8_t bit;
-	static volatile uint8_t byte;
-
-	getProximoSenso();
-	setInicioBaja();
-	setInicioAlta();
-	setIntentos();
-	getTension();
-	setTensionAlta();
-	setTensionBaja();
-	setInicioDato_Baja();
-	setInicioDato_Alta();
-	AsignarValor();
-	CheckSum();
 
 	switch (estado)
 	{
@@ -159,5 +137,68 @@ void MaquinaDeEstado (void)
 			tiempo_sensor = tiempo_DHT;
 		break;
 	}
+
+}
+
+uint8_t getProximoSenso(void)
+{
+
+}
+
+void setInicioBaja(void)
+{
+	tiempo_en_baja = TIEMPO_INICIO_BAJA;
+}
+
+void setInicioAlta(void)
+{
+	tiempo_en_alta = TIEMPO_INICIO_ALTA;
+}
+
+void setIntentos()
+{
+	intentos = INTENTOS_MAXIMOS;
+}
+
+Type_Tension getTension()
+{
+
+}
+
+void setTensionAlta()
+{
+	tiempo_en_alta = TENSION_ALTA;
+}
+
+void setTensionBaja()
+{
+	tiempo_en_baja = TENSION_BAJA;
+}
+
+void setInicioDato_Baja()
+{
+	tiempo_en_baja = TIEMPO_DATO_BAJA;
+}
+
+void setInicioDato_Alta()
+{
+	tiempo_en_alta = 0;
+}
+
+void AsignarValor(uint8_t valor)
+{
+	char valor1 = ~(1 << bit);
+	char valor2 = (0xF & valor1);
+
+
+	if(valor)
+		temperatura |= (valor << bit);
+	else
+		temperatura &= _40bits &~(1 << bit);
+		//temperatura &= (1 << bit);
+}
+
+bool CheckSum()
+{
 
 }
